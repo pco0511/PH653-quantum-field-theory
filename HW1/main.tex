@@ -1,0 +1,556 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage{amsmath,amssymb,amsthm, tikz,titlesec,hyperref,esint,braket, graphicx, mathrsfs, enumitem}
+\usepackage[a4paper,margin=2cm]{geometry}
+\linespread{1.3}
+\newtheorem{claim}{Claim}[section]
+
+\newcommand\name{Park Chanwoo}   % Name of the student
+\newcommand\university{KAIST} % Name of the university
+\newcommand\department{Physics} % Name of the department
+\newcommand\studentid{20230297} % Student ID
+\newcommand\s{\,\;}
+
+
+\newenvironment{solution}[1]
+  {\renewcommand\qedsymbol{$\square$}\begin{proof}[\textbf{Solution#1}]}
+  {\end{proof}}
+\newenvironment{note}
+  {\renewcommand\qedsymbol{$\blacksquare$}\begin{proof}[\textnormal{\textbf{note}}]}
+  {\end{proof}}
+
+\title{KAIST\\2026 Quantum Field Theory\\
+Homework 1\bigskip}
+\author{\textbf{\Large \name} \\
+% University: \university\\
+Department: \department\\
+Student ID: \studentid}
+\date{\today}
+
+\begin{document}
+\thispagestyle{empty}
+\maketitle
+\tableofcontents
+\titleformat{\section}[frame]{\pagebreak}{\filright
+\footnotesize  \enspace \textsf{KAIST --- Quantum Field Theory 2026 Fall}\enspace}{6pt}{\Large\bfseries\filcenter}
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{2}
+
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\supp}{\operatorname{supp}}
+\renewcommand{\Re}{\operatorname{Re}}
+\renewcommand{\Im}{\operatorname{Im}}
+\newcommand{\boltz}{k_{\mathrm{B}}}
+
+\section{Exercise 3.1 (not a homework)}
+
+The Hamiltonian, equation of motion, and the canonical commutation relations are given by
+\begin{gather}
+    H = \frac{1}{2}\int d^3\mathbf{x}\;\left[\pi^2 + (\nabla\phi)^2 + m^2\phi^2\right],\\
+    \dot{\phi} = i[H, \phi], \qquad\dot{\pi}=i[H,\pi],\\
+    [\phi(\mathbf{x}), \pi(\mathbf{y})] = i\delta^3(\mathbf{x}-\mathbf{y}), \qquad [\phi(\mathbf{x}), \phi(\mathbf{y})] = [\pi(\mathbf{x}), \pi(\mathbf{y})] = 0.
+\end{gather}
+
+Commutator of $\phi$ and $\pi$ with each term of the Hamiltonian is calculated as follows:
+\begin{align}
+    [\pi^2(\mathbf{y}), \phi(\mathbf{x})] 
+    &= \pi(\mathbf{y})[\pi(\mathbf{y}), \phi(\mathbf{x})] + [\pi(\mathbf{y}), \phi(\mathbf{x})]\pi(\mathbf{y}) \notag\\
+    &=-2i\delta^{(3)}(\mathbf{y}-\mathbf{x})\pi(\mathbf{y}),\\
+    [(\nabla\phi)^2(\mathbf{y}), \phi(\mathbf{x})] &=
+    (\nabla\phi)(\mathbf{y})\cdot[(\nabla\phi)(\mathbf{y}), \phi(\mathbf{x})] + [(\nabla\phi)(\mathbf{y}), \phi(\mathbf{x})]\cdot(\nabla\phi)(\mathbf{y})\notag\\
+    &=(\nabla\phi)(\mathbf{y})\cdot\nabla_{\mathbf{y}}[\phi(\mathbf{y}), \phi(\mathbf{x})] + \nabla_{\mathbf{y}}[\phi(\mathbf{y}), \phi(\mathbf{x})]\cdot(\nabla\phi)(\mathbf{y}) \notag\\
+    &= 0,\\
+    [\phi^2(\mathbf{y}), \phi(\mathbf{x})] &= \phi(\mathbf{y})[\phi(\mathbf{y}), \phi(\mathbf{x})] + [\phi(\mathbf{y}), \phi(\mathbf{x})]\phi(\mathbf{y}) = 0,\\
+    [\pi^2(\mathbf{y}), \pi(\mathbf{x})] &= \pi(\mathbf{y})[\pi(\mathbf{y}), \pi(\mathbf{x})] + [\pi(\mathbf{y}), \pi(\mathbf{x})]\pi(\mathbf{y}) = 0,\\
+    [(\nabla\phi)^2(\mathbf{y}), \pi(\mathbf{x})] &=
+    (\nabla\phi)(\mathbf{y})\cdot[(\nabla\phi)(\mathbf{y}), \pi(\mathbf{x})] + [(\nabla\phi)(\mathbf{y}), \pi(\mathbf{x})]\cdot(\nabla\phi)(\mathbf{y})\notag\\
+    &= (\nabla\phi)(\mathbf{y})\cdot\nabla_{\mathbf{y}}[\phi(\mathbf{y}), \pi(\mathbf{x})] + \nabla_{\mathbf{y}}[\phi(\mathbf{y}), \pi(\mathbf{x})]\cdot(\nabla\phi)(\mathbf{y})\notag\\
+    &= i(\nabla\phi)(\mathbf{y})\cdot\nabla_{\mathbf{y}}\delta^{(3)}(\mathbf{y}-\mathbf{x}) + i\nabla_{\mathbf{y}}\delta^{(3)}(\mathbf{y}-\mathbf{x})\cdot(\nabla\phi)(\mathbf{y})\notag\\
+    &= 2i(\nabla\phi)(\mathbf{y})\cdot\nabla_{\mathbf{y}}\delta^{(3)}(\mathbf{y}-\mathbf{x}),\\
+    [\phi^2(\mathbf{y}), \pi(\mathbf{x})] &= \phi(\mathbf{y})[\phi(\mathbf{y}), \pi(\mathbf{x})] + [\phi(\mathbf{y}), \pi(\mathbf{x})]\phi(\mathbf{y}) = 2i\delta^{(3)}(\mathbf{y}-\mathbf{x})\phi(\mathbf{y}).
+\end{align}
+
+Hence, the time derivatives are
+\begin{align}
+    \dot{\phi}(\mathbf{x}) 
+    &= i[H, \phi] \notag\\
+    &= \frac{i}{2}\int d^3\mathbf{y}\, \left[-2i\pi(\mathbf{y})\delta^{(3)}(\mathbf{y}-\mathbf{x})\right] \notag\\
+    &= \pi(\mathbf{x}), \\
+    \dot{\pi}(\mathbf{x}) 
+    &= i[H,\pi] \notag\\
+    &= \frac{i}{2}\int d^3\mathbf{y}\, \left[2i(\nabla\phi)(\mathbf{y})\cdot\nabla_{\mathbf{y}}\delta^{(3)}(\mathbf{y}-\mathbf{x}) + 2im^2\phi(\mathbf{y})\delta^{(3)}(\mathbf{y}-\mathbf{x})\right] \notag\\
+    &= (\nabla^2\phi)(\mathbf{x}) - m^2\phi(\mathbf{x})
+\end{align}
+
+By combining them,
+\begin{equation}
+\ddot{\phi} = \nabla^2\phi -m^2\phi \iff (\partial^2 - m^2)\phi=0
+\end{equation}
+
+
+
+
+\section{Exercise 3.2 (not a homework)}
+
+The mode expansion of free scalar field $\phi$ is given by
+\begin{equation}
+    \phi(x) = \int d\Pi_p\left(a_{\mathbf{p}}e^{ip\cdot x} + a_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right),
+\end{equation}
+Where $d\Pi_p = \frac{d^3\mathbf{p}}{(2\pi)^{3/2}\sqrt{2E_{\mathbf{p}}}}$
+
+Using mode expansion, the commutator of $\phi(x)$ and $\phi(y)$ is calculated as follows:
+\begin{align}
+    [\phi(x), \phi(y)] &= \int d\Pi_p d\Pi_q \left([a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger]e^{ip\cdot x}e^{-iq\cdot y} + [a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}]e^{-ip\cdot x}e^{iq\cdot y}\right) \notag\\
+    &= \int d\Pi_p d\Pi_q \left[\delta^{(3)}(\mathbf{p}-\mathbf{q})e^{ip\cdot x}e^{-iq\cdot y} - \delta^{(3)}(\mathbf{p}-\mathbf{q})e^{-ip\cdot x}e^{iq\cdot y}\right] \notag\\
+    &=\int \frac{d^3\mathbf{p}}{2E_{\mathbf{p}}(2\pi)^{3}} \left[e^{ip\cdot (x-y)} - e^{-ip\cdot (x-y)}\right] \label{eq:commutator}
+\end{align} 
+Where $[a_{\mathbf{p}}, a_{\mathbf{q}}] = 0$, $[a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}^\dagger] = 0$ and $[a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger] = \delta^{(3)}(\mathbf{p}-\mathbf{q})$ are used.
+
+If $x-y$ is spacelike (i.e. $(x-y)^2 > 0$), we can choose a reference frame where $\tilde{x}^0 = \tilde{y}^0$. Moreover, $p\cdot(x-y)$ and the measure $d^3\mathbf{p}/(2E_{\mathbf{p}})=d^4p\delta(p^2+m^2)\Theta(p^0)$ remain invariant after the transformation. Hence, we can write
+\begin{align}
+    [\phi(x), \phi(y)] &= \int \frac{d^3\mathbf{p}}{2E_{\mathbf{p}}(2\pi)^{3}} \left[e^{ip\cdot (x-y)} - e^{-ip\cdot (x-y)}\right] \notag\\
+    &= \int \frac{d^3\tilde{\mathbf{p}}}{2E_{\tilde{\mathbf{p}}}(2\pi)^{3}} \left[e^{i\tilde{\mathbf{p}}\cdot (\tilde{\mathbf{x}} - \tilde{\mathbf{y}})} - e^{-i\tilde{\mathbf{p}}\cdot (\tilde{\mathbf{x}} - \tilde{\mathbf{y}})}\right]
+\end{align}
+By filping the sign of $\tilde{\mathbf{p}}$ in the second term, we get
+\begin{align}
+    [\phi(x), \phi(y)] &= \int \frac{d^3\tilde{\mathbf{p}}}{2E_{\tilde{\mathbf{p}}}(2\pi)^{3}} e^{i\tilde{\mathbf{p}}\cdot (\tilde{\mathbf{x}} - \tilde{\mathbf{y}})} - \int \frac{d^3(-\tilde{\mathbf{p}})}{2E_{-\tilde{\mathbf{p}}}(2\pi)^{3}} e^{i(-\tilde{\mathbf{p}})\cdot (\tilde{\mathbf{x}} - \tilde{\mathbf{y}})} \notag\\
+    &= 0
+\end{align}
+
+This is consistent with the causality of the theory.
+\begin{equation}
+    [\phi(x), \phi(y)] = 0 \quad \text{for } (x-y)^2 > 0
+\end{equation}
+
+
+\section{Problem 3.1}
+
+The mode expansion of free scalar field $\phi$ is given by
+\begin{equation}
+    \phi(\mathbf{x}, 0) = \int d\Pi_p\left(a_{\mathbf{p}}e^{i\mathbf{p}\cdot \mathbf{x}} + a_{\mathbf{p}}^\dagger e^{-i\mathbf{p}\cdot \mathbf{x}}\right),
+\end{equation}
+
+The vacuum expectation is 
+\begin{equation}
+    \langle0|\phi(\mathbf{x}, 0)|0\rangle = \int d\Pi_p \langle0|a_{\mathbf{p}}|0\rangle e^{i\mathbf{p}\cdot \mathbf{x}} + \langle0|a_{\mathbf{p}}^\dagger|0\rangle e^{-i\mathbf{p}\cdot \mathbf{x}} =0
+\end{equation}
+because $a_{\mathbf{p}}|0\rangle = 0$ and $\langle0|a_{\mathbf{p}}^\dagger = 0$.
+
+Therefore, the ground state expectation of $A(a)$ is
+\begin{equation}
+    \langle 0|A(a)|0\rangle  = \frac{1}{(a\sqrt{\pi})^3}\int d^3\mathbf{x}\, \langle 0|\phi(\mathbf{x}, 0)|0\rangle e^{-|\mathbf{x}|^2/a^2} = 0
+\end{equation}
+
+For the expectation of $\phi(\mathbf{x}, 0)\phi(\mathbf{y}, 0)$, the only term that contributes is $a_{\mathbf{p}}a_{\mathbf{q}}^\dagger$. Hence,
+\begin{align}
+    \langle0|\phi(\mathbf{x}, 0)\phi(\mathbf{y}, 0)|0\rangle 
+    &= \int d\Pi_p d\Pi_q \langle0|a_{\mathbf{p}}a_{\mathbf{q}}^\dagger|0\rangle e^{i\mathbf{p}\cdot \mathbf{x}}e^{-i\mathbf{q}\cdot \mathbf{y}}\notag\\
+    &= \int d\Pi_p d\Pi_q \langle0|a_{\mathbf{q}}^\dagger a_{\mathbf{p}} + [a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger]|0\rangle e^{i\mathbf{p}\cdot \mathbf{x}}e^{-i\mathbf{q}\cdot \mathbf{y}}\notag\\
+    &= \int d\Pi_p d\Pi_q \delta^{(3)}(\mathbf{p}-\mathbf{q}) e^{i\mathbf{p}\cdot \mathbf{x}}e^{-i\mathbf{q}\cdot \mathbf{y}}\notag\\
+    &= \int d\Pi_p \frac{1}{(2\pi)^{3/2}\sqrt{2E_{\mathbf{p}}}}e^{i\mathbf{p}\cdot (\mathbf{x}-\mathbf{y})}\notag\\
+    &= \int \frac{d^3\mathbf{p}}{2(2\pi)^{3}E_{\mathbf{p}}} e^{i\mathbf{p}\cdot (\mathbf{x}-\mathbf{y})}
+\end{align}
+
+The expectation of $A^2(a)$ is
+\begin{align}
+    \langle 0|A^2(a)|0\rangle 
+    &= \frac{1}{(a\sqrt{\pi})^6}\int d^3\mathbf{x}d^3\mathbf{y}\, \langle 0|\phi(\mathbf{x}, 0)\phi(\mathbf{y}, 0)|0\rangle e^{-|\mathbf{x}|^2/a^2}e^{-|\mathbf{y}|^2/a^2}\notag\\
+    &= \frac{1}{2(a\sqrt{\pi})^6(2\pi)^{3}}\int d^3\mathbf{x}d^3\mathbf{y}d^3\mathbf{p} \frac{1}{\sqrt{m^2 + |\mathbf{p}|^2}}e^{i\mathbf{p}\cdot (\mathbf{x}-\mathbf{y})} e^{-|\mathbf{x}|^2/a^2}e^{-|\mathbf{y}|^2/a^2}\notag\\
+    &=\frac{1}{2(a\sqrt{\pi})^6(2\pi)^{3}}\int d^3\mathbf{p}\,\frac{e^{-a^2|\mathbf{p}|^2/2}}{\sqrt{m^2 + |\mathbf{p}|^2}}\int d^3\mathbf{x}\,e^{-|\mathbf{x} - ia^2\mathbf{p}/2|^2/a^2}\int d^3\mathbf{y}\, e^{-|\mathbf{y} + ia^2\mathbf{p}/2|^2/a^2}\notag\\
+    &=\frac{1}{2(2\pi)^3}\int d^3\mathbf{p}\,\frac{e^{-a^2|\mathbf{p}|^2/2}}{\sqrt{m^2 + |\mathbf{p}|^2}}\notag\\
+    &=\frac{1}{4\pi^2}\int_0^\infty dp\,\frac{p^2 e^{-a^2p^2/2}}{\sqrt{m^2 + p^2}}
+\end{align}
+
+To get an expression with modified Bessel function, substitute $p = m\sinh t$ and $dp = m\cosh t dt$. Then,
+\begin{align}
+    \int dp\,\frac{p^2 e^{-a^2p^2/2}}{\sqrt{m^2 + p^2}}
+    &= m^2 \int_{0}^{\infty} dt\, \sinh^2 t e^{-a^2m^2\sinh^2 t/2}\notag\\
+    &= \frac{m^2e^{\frac{a^2m^2}{4}}}{4} \int_{0}^{\infty} du\, (\cosh u - 1)e^{-(a^2m^2/4)\cosh u}
+\end{align}
+Where $u=2t$. Then, this is the integral representation of the modified Bessel function of the second kind, $K_\nu(x) = \int_0^\infty d\tau\, e^{-x\cosh \tau}\cosh \nu\tau$. Hence, The expectation of $A^2(a)$ is
+\begin{equation}
+    \langle 0|A^2(a)|0\rangle = \frac{m^2e^{\frac{a^2m^2}{4}}}{16\pi^2} \left[K_1\left(\frac{a^2m^2}{4}\right) - K_0\left(\frac{a^2m^2}{4}\right)\right]
+\end{equation}
+Since $\langle 0|A(a)|0\rangle = 0$, it is also the variance of $A(a)$.
+
+\begin{equation}
+    \operatorname{Var} A(a) = \frac{m^2e^{\frac{a^2m^2}{4}}}{16\pi^2} \left[K_1\left(\frac{a^2m^2}{4}\right) - K_0\left(\frac{a^2m^2}{4}\right)\right]
+\end{equation}
+
+
+For $ma\ll 1$, $K_1(z)\simeq 1/z$ is dominant and $K_0(z)\simeq -\ln (z/2)-\gamma$ is subleading. since $e^z\simeq 1$, 
+\begin{equation}
+    \operatorname{Var} A(a) \simeq \frac{m^2}{16\pi^2}\frac{4}{a^2m^2} \simeq \frac{1}{4\pi^2 a^2}
+\end{equation}
+Hence, $\alpha = 1 / 4\pi^2$ and $\beta=-2$.
+
+for $ma\gg 1$, $K_\nu(z)\simeq\sqrt{\pi/(2z)}\left(1+ (4\nu^2 - 1)/(8z)\right)$ and $K_1(z) - K_0(z)\simeq \sqrt{\pi/(2z)}e^{-z}/(2z)$.
+
+Hence,
+\begin{equation}
+\operatorname{Var} A(a) \simeq \frac{1}{2(2\pi)^{3/2} ma^3}
+\end{equation}
+Hence, $\alpha = 1 / (2(2\pi)^{3/2} m)$ and $\beta=-3$.
+
+For the short distance, the variance diverges as $1/a^2$. This means $\phi(x)$ can have arbitrarily large fluctuations at short distance. This can be a UV divergence in the theory. 
+
+For the long distance, it is modes times fluctuation per modes.
+
+
+\section{Problem 3.2}
+
+\subsection{(a)}
+
+To have Lorentz invariance, all of the indices must be contracted via the metric tensor. Upto two derivatives, the candidates are:
+\begin{equation}
+    \partial_\mu\phi^\dagger\partial^\mu\phi,\quad \partial_\mu\phi\partial^\mu\phi, \quad \partial_\mu\phi^\dagger\partial^\mu\phi^\dagger, \quad\phi^\dagger\phi, \quad \phi^2, \phi^{\dagger 2}
+\end{equation}
+
+By the reality of the action and global $U(1)$ symmetry, the only term that can be included in the Lagrangian is $\partial_\mu\phi^\dagger\partial^\mu\phi$ and $\phi^\dagger\phi$. 
+
+to make the kinetic energy term to be positive, the Lagrangian of the simplest natural complex scalar field theory upto a multiplicative constant is
+\begin{equation}
+    \mathcal{L} = -\partial_\mu\phi^\dagger\partial^\mu\phi - m^2\phi^\dagger\phi
+\end{equation}
+
+\subsection{(b)}
+
+The canonical momenta conjugate to $\phi$ and $\phi^\dagger$ are
+\begin{equation}
+    \pi = \frac{\partial\mathcal{L}}{\partial\dot{\phi}} = \dot{\phi}^\dagger, \qquad \pi^\dagger = \frac{\partial\mathcal{L}}{\partial\dot{\phi}^\dagger} = \dot{\phi}
+\end{equation}
+
+And, the equal-time canonical commutation relations are
+\begin{align}
+    [\phi(\mathbf{x}, t), \pi(\mathbf{y}, t)] &= i\delta^{(3)}(\mathbf{x}-\mathbf{y}),& \qquad [\phi^\dagger(\mathbf{x}, t), \pi^\dagger(\mathbf{y}, t)] &= i\delta^{(3)}(\mathbf{x}-\mathbf{y})\\
+    [\phi(\mathbf{x}, t), \phi^\dagger(\mathbf{y}, t)] &= 0,& \qquad [\pi(\mathbf{x}, t), \pi^\dagger(\mathbf{y}, t)] &= 0\\
+    [\phi(\mathbf{x}, t), \pi^\dagger(\mathbf{y}, t)] &= 0,& \qquad [\phi^\dagger(\mathbf{x}, t), \pi(\mathbf{y}, t)] &= 0
+\end{align}
+
+The Hamiltonian is
+\begin{align}
+    H &= \int d^3\mathbf{x}\, \left(\pi\dot{\phi} + \pi^\dagger\dot{\phi}^\dagger - \mathcal{L}\right) \notag\\
+    &= \int d^3\mathbf{x}\, \left(\pi^\dagger\pi + \nabla\phi^\dagger\cdot\nabla\phi + m^2\phi^\dagger\phi\right)
+\end{align}
+
+And the commutators of $\phi$ and $\pi$ with the Hamiltonian are
+\begin{align}
+    [H, \phi(\mathbf{x})] &= \int d^3\mathbf{y}\, \left([\pi^\dagger\pi(\mathbf{y}), \phi(\mathbf{x})] + [\nabla\phi^\dagger\cdot\nabla\phi(\mathbf{y}), \phi(\mathbf{x})] + [m^2\phi^\dagger\phi(\mathbf{y}), \phi(\mathbf{x})]\right) \notag\\
+    &= \int d^3\mathbf{y}\, \pi^\dagger(\mathbf{y})[\pi(\mathbf{y}), \phi(\mathbf{x})] \notag\\
+    &=\int d^3\mathbf{y}\, [-i\delta^{(3)}(\mathbf{x}-\mathbf{y})]\pi^\dagger(\mathbf{y}) \\
+    &= -i\pi^\dagger(\mathbf{x}),\\
+    [H, \pi(\mathbf{x})] &= \int d^3\mathbf{y}\, \left([\pi^\dagger\pi(\mathbf{y}), \pi(\mathbf{x})] + [\nabla\phi^\dagger\cdot\nabla\phi(\mathbf{y}), \pi(\mathbf{x})] + [m^2\phi^\dagger\phi(\mathbf{y}), \pi(\mathbf{x})]\right) \notag\\
+    &=\int d^3\mathbf{y}\, \nabla\phi^\dagger(\mathbf{y})\cdot\nabla_{\mathbf{y}}[\phi(\mathbf{y}),\pi(\mathbf{x})]+ m^2\phi^{\dagger}(\mathbf{y})[\phi(\mathbf{y}), \pi(\mathbf{x})]\\
+    &= -i\nabla^2\phi^\dagger(\mathbf{x}) + im^2\phi^\dagger(\mathbf{x})
+\end{align}
+
+This gives the time derivatives of $\phi$, $\phi^\dagger$, $\pi$, and $\pi^\dagger$:
+\begin{align}
+    \dot{\phi} &= i[H, \phi] = \pi^\dagger, & \dot{\phi}^\dagger &= i[H, \phi^\dagger] = \pi,\\
+    \dot{\pi} &= i[H, \pi] = \nabla^2\phi^\dagger - m^2\phi^\dagger, & \dot{\pi}^\dagger &= i[H, \pi^\dagger] = \nabla^2\phi - m^2\phi
+\end{align}
+
+By combining them, the equations of motion are
+\begin{equation}
+    (\partial^2 - m^2)\phi = 0, \qquad (\partial^2 - m^2)\phi^\dagger = 0
+\end{equation}
+
+To obtain the mode expansion, fourier transform the fields:
+\begin{equation}
+    \phi(x) = \int \frac{d^3\mathbf{p}}{(2\pi)^3} e^{i\mathbf{p}\cdot\mathbf{x}} \phi_{\mathbf{p}}(t)
+\end{equation}
+
+And the equation of motion gives:
+\begin{equation}
+    \ddot{\phi}_{\mathbf{p}}(t) + E_{\mathbf{p}}^2\phi_{\mathbf{p}}(t) = 0
+\end{equation}
+Where $E_p = \sqrt{|\mathbf{p}|^2 + m^2}$
+
+Hence, the momentum mode is sum of positive and negative frequency modes:
+\begin{equation}
+    \phi_{\mathbf{p}}(t) = \frac{(2\pi)^{3/2}}{\sqrt{2E_{\mathbf{p}}}}\left(c_{\mathbf{p}}e^{-iE_{\mathbf{p}}t} + d_{-\mathbf{p}}^\dagger e^{iE_{\mathbf{p}}t}\right)
+\end{equation}
+
+combining them, the mode expansion of the complex scalar field is
+\begin{equation}
+    \phi(x) = \int d\Pi_p\left(c_{\mathbf{p}}e^{ip\cdot x} + d_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right)
+\end{equation}
+Where $d\Pi_p = \frac{d^3\mathbf{p}}{(2\pi)^{3/2}\sqrt{2E_{\mathbf{p}}}}$
+
+For $\phi^\dagger$, the same procedure gives
+\begin{equation}
+    \phi^\dagger(x) = \int d\Pi_p\left(\tilde{c}_{\mathbf{p}} e^{-ip\cdot x} + \tilde{d}_{\mathbf{p}}^\dagger e^{ip\cdot x}\right)
+\end{equation}
+
+Since $\phi\ne\phi^\dagger$, $c_{\mathbf{p}}$ and $d_{\mathbf{p}}$ are independent, and the relation between $c_{\mathbf{p}}, d_{\mathbf{p}}$ and $\tilde{c}_{\mathbf{p}}, \tilde{d}_{\mathbf{p}}$ is determined by the hermitian conjugation:
+\begin{equation}
+    \phi^\dagger(x) = \int d\Pi_p\left(c_{\mathbf{p}}^\dagger e^{-ip\cdot x} + d_{\mathbf{p}} e^{ip\cdot x}\right)
+\end{equation}
+
+For the conjugate momenta, the mode expansion is
+\begin{align}
+    \pi(x) &= \dot{\phi}^\dagger = \int d\Pi_p\left(iE_{\mathbf{p}}c_{\mathbf{p}}^\dagger e^{-ip\cdot x} - iE_{\mathbf{p}}d_{\mathbf{p}} e^{ip\cdot x}\right), \\
+    \pi^\dagger(x) &= \dot{\phi} = \int d\Pi_p\left(-iE_{\mathbf{p}}c_{\mathbf{p}}e^{ip\cdot x} + iE_{\mathbf{p}}d_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right)
+\end{align}
+
+The modes $c_{\mathbf{p}}$ and $d_{\mathbf{p}}$ also can be expressed in terms of the fields as follows:
+\begin{align}
+    E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x) &= \int d\Pi_q\left(E_{\mathbf{p}}c_{\mathbf{q}}e^{iq\cdot x} + E_{\mathbf{p}}d_{\mathbf{q}}^\dagger e^{-iq\cdot x} + E_{\mathbf{q}}c_{\mathbf{q}}e^{iq\cdot x} - E_{\mathbf{q}}d_{\mathbf{q}}^\dagger e^{-iq\cdot x}\right) \notag\\
+    \implies \int d^3\mathbf{x}\, e^{-i\mathbf{p}\cdot\mathbf{x}}\left[E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x)\right] &= 2E_{\mathbf{p}}\int d\Pi_q \int d^3\mathbf{x} \, c_{\mathbf{q}} e^{i(\mathbf{q}-\mathbf{p})\cdot\mathbf{x}} e^{-iE_{\mathbf{q}}t} = \sqrt{2E_{\mathbf{p}}}(2\pi)^{3/2}e^{-iE_{\mathbf{p}}t}c_{\mathbf{p}}\notag\\
+    \implies c_{\mathbf{p}} &= \frac{e^{iE_{\mathbf{p}}t}}{(2\pi)^{3/2}\sqrt{2E_{\mathbf{p}}}}\int d^3\mathbf{x}\, e^{-i\mathbf{p}\cdot\mathbf{x}}\left[E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x)\right]
+\end{align}
+and similarly,
+\begin{align}
+    E_{\mathbf{p}}\phi^\dagger(x) + i\pi(x) &= \int d\Pi_q\left(E_{\mathbf{p}}c_{\mathbf{q}}^\dagger e^{-iq\cdot x} + E_{\mathbf{p}}d_{\mathbf{q}} e^{iq\cdot x} - E_{\mathbf{q}}c_{\mathbf{q}}^\dagger e^{-iq\cdot x} + E_{\mathbf{q}}d_{\mathbf{q}} e^{iq\cdot x}\right) \notag\\
+    \implies \int d^3\mathbf{x}\, e^{-i\mathbf{p}\cdot\mathbf{x}}\left[E_{\mathbf{p}}\phi^\dagger(x) + i\pi(x)\right] &= 2E_{\mathbf{p}}\int d\Pi_q \int d^3\mathbf{x} \, d_{\mathbf{q}} e^{i(\mathbf{q}-\mathbf{p})\cdot\mathbf{x}} e^{-iE_{\mathbf{q}}t} = \sqrt{2E_{\mathbf{p}}}(2\pi)^{3/2}e^{-iE_{\mathbf{p}}t}d_{\mathbf{p}}\notag\\
+    \implies d_{\mathbf{p}} &= \frac{e^{iE_{\mathbf{p}}t}}{(2\pi)^{3/2}\sqrt{2E_{\mathbf{p}}}}\int d^3\mathbf{x}\, e^{-i\mathbf{p}\cdot\mathbf{x}}\left[E_{\mathbf{p}}\phi^\dagger(x) + i\pi(x)\right]
+\end{align}
+
+Using these expressions, the commutation relations of $c_{\mathbf{p}}$ and $d_{\mathbf{p}}$ can be calculated from the canonical commutation relations of $\phi$ and $\pi$.
+\begin{align}
+    [E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x), E_{\mathbf{q}}\phi(y) + i\pi^\dagger(y)]
+    &= 0 \implies  [c_{\mathbf{p}}, c_{\mathbf{q}}] = 0\\
+    [E_{\mathbf{p}}\phi^\dagger(x) + i\pi(x), E_{\mathbf{q}}\phi^\dagger(y) + i\pi(y)]
+    &= 0 \implies  [d_{\mathbf{p}}, d_{\mathbf{q}}] = 0\\
+    [E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x), E_{\mathbf{q}}\phi^\dagger(y) + i\pi(y)]
+    &= (E_{\mathbf{q}}-E_{\mathbf{p}})\delta^{(3)}(\mathbf{x}-\mathbf{y})\\
+    \int d^3\mathbf{x} d^3\mathbf{y}\,e^{-i\mathbf{p}\cdot\mathbf{x}}e^{-i\mathbf{q}\cdot\mathbf{y}}(E_{\mathbf{q}}-E_{\mathbf{p}})\delta^{(3)}(\mathbf{x}-\mathbf{y}) &= \int d^3\mathbf{x}\, e^{-i(\mathbf{p}+\mathbf{q})\cdot\mathbf{x}}(E_{\mathbf{q}}-E_{\mathbf{p}}) = 0\\
+    \implies [c_{\mathbf{p}}, d_{\mathbf{q}}] = 0\\
+    [E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x), E_{\mathbf{q}}\phi(y) - i\pi^\dagger(y)] &= 0 \implies [c_{\mathbf{p}}, d_{\mathbf{q}}^\dagger] = 0\\
+    [E_{\mathbf{p}}\phi(x) + i\pi^\dagger(x), E_{\mathbf{q}}\phi^\dagger(y) - i\pi(y)] &= (E_{\mathbf{p}} + E_{\mathbf{q}})\delta^{(3)}(\mathbf{x}-\mathbf{y}) \\
+    \int d^3\mathbf{x} d^3\mathbf{y}\,e^{-i\mathbf{p}\cdot\mathbf{x}}e^{i\mathbf{q}\cdot\mathbf{y}}(E_{\mathbf{p}} + E_{\mathbf{q}})\delta^{(3)}(\mathbf{x}-\mathbf{y}) &= \int d^3\mathbf{x}\, e^{-i(\mathbf{p}-\mathbf{q})\cdot\mathbf{x}}(E_{\mathbf{p}} + E_{\mathbf{q}}) \\
+    &= 2E_{\mathbf{p}}(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})\\
+    \implies [c_{\mathbf{p}}, c_{\mathbf{q}}^\dagger] &= \delta^{(3)}(\mathbf{p}-\mathbf{q})\\
+    [E_{\mathbf{p}}\phi^\dagger(x) + i\pi(x), E_{\mathbf{q}}\phi(y) - i\pi^\dagger(y)] &= (E_{\mathbf{p}} + E_{\mathbf{q}})\delta^{(3)}(\mathbf{x}-\mathbf{y}) \\
+    \int d^3\mathbf{x} d^3\mathbf{y}\,e^{-i\mathbf{p}\cdot\mathbf{x}}e^{i\mathbf{q}\cdot\mathbf{y}}(E_{\mathbf{p}} + E_{\mathbf{q}})\delta^{(3)}(\mathbf{x}-\mathbf{y}) &= \int d^3\mathbf{x}\, e^{-i(\mathbf{p}-\mathbf{q})\cdot\mathbf{x}}(E_{\mathbf{p}} + E_{\mathbf{q}}) \\
+    &= 2E_{\mathbf{p}}(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})\\
+    \implies [d_{\mathbf{p}}, d_{\mathbf{q}}^\dagger] &= \delta^{(3)}(\mathbf{p}-\mathbf{q})
+\end{align}
+$E_{\mathbf{p}}=E_{-\mathbf{p}}$ is used to simplify the integrals. Hence, the commutation relations of $c_{\mathbf{p}}$ and $d_{\mathbf{p}}$ are
+\begin{align}
+    [c_{\mathbf{p}}, c_{\mathbf{q}}] &= 0, & [c_{\mathbf{p}}, c_{\mathbf{q}}^\dagger] &= \delta^{(3)}(\mathbf{p}-\mathbf{q})\\
+    [d_{\mathbf{p}}, d_{\mathbf{q}}] &= 0, & [d_{\mathbf{p}}, d_{\mathbf{q}}^\dagger] &= \delta^{(3)}(\mathbf{p}-\mathbf{q})\\
+    [c_{\mathbf{p}}, d_{\mathbf{q}}] &= 0, & [c_{\mathbf{p}}, d_{\mathbf{q}}^\dagger] &= 0
+\end{align}
+
+\subsection{(c)} 
+
+The Hamiltonian was
+\begin{equation}
+    H = \int d^3\mathbf{x}\, \left(\pi^\dagger\pi + \nabla\phi^\dagger\cdot\nabla\phi + m^2\phi^\dagger\phi\right)
+\end{equation}
+
+Each term are:
+\begin{align}
+    \int d^3\mathbf{x}\,\pi^\dagger\pi &= \int d^3\mathbf{x} d\Pi_p d\Pi_q\, \left(-iE_{\mathbf{p}}c_{\mathbf{p}}e^{ip\cdot x} + iE_{\mathbf{p}}d_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right)\left(iE_{\mathbf{q}}c_{\mathbf{q}}^\dagger e^{-iq\cdot x} - iE_{\mathbf{q}}d_{\mathbf{q}} e^{iq\cdot x}\right) \\
+    &=\frac{1}{2(2\pi)^3}\int d^3\mathbf{p}d^3\mathbf{q}d^3\mathbf{x}\, \sqrt{E_{\mathbf{p}}E_{\mathbf{q}}} \left(c_{\mathbf{p}}e^{ip\cdot x} -d_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right)\left(c_{\mathbf{q}}^\dagger e^{-iq\cdot x} - d_{\mathbf{q}} e^{iq\cdot x}\right) \\
+    &=\frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \sqrt{E_{\mathbf{p}}E_{\mathbf{q}}} \delta^{(3)}(\mathbf{p}-\mathbf{q})\left[e^{-i(E_{\mathbf{p}}-E_{\mathbf{q}})t}c_{\mathbf{p}}c_{\mathbf{q}}^\dagger + e^{i(E_{\mathbf{p}}-E_{\mathbf{q}})t}d_{\mathbf{p}}^\dagger d_{\mathbf{q}}\right] \\
+    &-\frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \sqrt{E_{\mathbf{p}}E_{\mathbf{q}}} \delta^{(3)}(\mathbf{p}+\mathbf{q})\left[e^{-i(E_{\mathbf{p}}+E_{\mathbf{q}})t}c_{\mathbf{p}}d_{\mathbf{q}} + e^{i(E_{\mathbf{p}}+E_{\mathbf{q}})t}d_{\mathbf{p}}^\dagger c_{\mathbf{q}}^\dagger\right] \\
+    &=\frac{1}{2}\int d^3\mathbf{p}\, E_{\mathbf{p}}\left[c_{\mathbf{p}}c_{\mathbf{p}}^\dagger + d_{\mathbf{p}}^\dagger d_{\mathbf{p}} - e^{-2iE_{\mathbf{p}}t}c_{\mathbf{p}}d_{-\mathbf{p}}-e^{2iE_{\mathbf{p}}t}d_{\mathbf{p}}^\dagger c_{-\mathbf{p}}^\dagger\right]
+\end{align}
+and
+\begin{align}
+    \int d^3\mathbf{x}\, \phi^\dagger\phi
+    &= \int d^3\mathbf{x} d\Pi_p d\Pi_q\, \left(c_{\mathbf{p}}^\dagger e^{-ip\cdot x} + d_{\mathbf{p}} e^{ip\cdot x}\right)\left(c_{\mathbf{q}} e^{iq\cdot x} + d_{\mathbf{q}}^\dagger e^{-iq\cdot x}\right) \\
+    &=\frac{1}{2(2\pi)^3}\int d^3\mathbf{p}d^3\mathbf{q}d^3\mathbf{x}\, \frac{1}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \left(c_{\mathbf{p}}^\dagger e^{-ip\cdot x} + d_{\mathbf{p}} e^{ip\cdot x}\right)\left(c_{\mathbf{q}} e^{iq\cdot x} + d_{\mathbf{q}}^\dagger e^{-iq\cdot x}\right) \\
+    &=\frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \frac{1}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \delta^{(3)}(\mathbf{p}-\mathbf{q})\left[e^{i(E_{\mathbf{p}}-E_{\mathbf{q}})t}c_{\mathbf{p}}^\dagger c_{\mathbf{q}} + e^{-i(E_{\mathbf{p}}-E_{\mathbf{q}})t}d_{\mathbf{p}} d_{\mathbf{q}}^\dagger\right] \\
+    &+\frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \frac{1}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \delta^{(3)}(\mathbf{p}+\mathbf{q})\left[e^{i(E_{\mathbf{p}}+E_{\mathbf{q}})t}c_{\mathbf{p}}^\dagger d_{\mathbf{q}}^\dagger + e^{-i(E_{\mathbf{p}}+E_{\mathbf{q}})t}d_{\mathbf{p}}c_{\mathbf{q}}\right] \\
+    &=\frac{1}{2}\int d^3\mathbf{p}\, \frac{1}{E_{\mathbf{p}}}\left[c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + d_{\mathbf{p}} d_{\mathbf{p}}^\dagger + e^{2iE_{\mathbf{p}}t}c_{\mathbf{p}}^\dagger d_{-\mathbf{p}}^\dagger + e^{-2iE_{\mathbf{p}}t}d_{\mathbf{p}}c_{-\mathbf{p}}\right]  
+\end{align}
+
+
+And the spatial derivatives term is:
+\begin{align}
+    \int d^3\mathbf{x}\, \nabla\phi^\dagger\cdot\nabla\phi 
+    &= \int d^3\mathbf{x} d\Pi_p d\Pi_q\, \left(-i\mathbf{p}c_{\mathbf{p}}^\dagger e^{-ip\cdot x} + i\mathbf{p}d_{\mathbf{p}} e^{ip\cdot x}\right)\cdot\left(i\mathbf{q}c_{\mathbf{q}} e^{iq\cdot x} - i\mathbf{q}d_{\mathbf{q}}^\dagger e^{-iq\cdot x}\right) \\
+    &=\frac{1}{2(2\pi)^3}\int d^3\mathbf{p}d^3\mathbf{q}d^3\mathbf{x}\, \frac{\mathbf{p}\cdot\mathbf{q}}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \left(c_{\mathbf{p}}^\dagger e^{-ip\cdot x} - d_{\mathbf{p}} e^{ip\cdot x}\right)\left(c_{\mathbf{q}} e^{iq\cdot x} - d_{\mathbf{q}}^\dagger e^{-iq\cdot x}\right) \\
+    &= \frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \frac{\mathbf{p}\cdot\mathbf{q}}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \delta^{(3)}(\mathbf{p}-\mathbf{q})\left[e^{i(E_{\mathbf{p}}-E_{\mathbf{q}})t}c_{\mathbf{p}}^\dagger c_{\mathbf{q}} + e^{-i(E_{\mathbf{p}}-E_{\mathbf{q}})t}d_{\mathbf{p}} d_{\mathbf{q}}^\dagger\right] \\
+    &-\frac{1}{2}\int d^3\mathbf{p}d^3\mathbf{q} \frac{\mathbf{p}\cdot\mathbf{q}}{\sqrt{E_{\mathbf{p}}E_{\mathbf{q}}}} \delta^{(3)}(\mathbf{p}+\mathbf{q})\left[e^{i(E_{\mathbf{p}}+E_{\mathbf{q}})t}c_{\mathbf{p}}^\dagger d_{\mathbf{q}}^\dagger + e^{-i(E_{\mathbf{p}}+E_{\mathbf{q}})t}d_{\mathbf{p}}c_{\mathbf{q}}\right] \\
+    &=\frac{1}{2}\int d^3\mathbf{p}\, \frac{|\mathbf{p}|^2}{E_{\mathbf{p}}}\left[c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + d_{\mathbf{p}} d_{\mathbf{p}}^\dagger + e^{2iE_{\mathbf{p}}t}c_{\mathbf{p}}^\dagger d_{-\mathbf{p}}^\dagger + e^{-2iE_{\mathbf{p}}t}d_{\mathbf{p}}c_{-\mathbf{p}}\right]
+\end{align}
+
+using the relation $E_{\mathbf{p}}^2 = |\mathbf{p}|^2 + m^2$, 
+\begin{equation}
+    \int d^3\mathbf{x}\, \left(\nabla\phi^\dagger\cdot\nabla\phi + m^2\phi^\dagger\phi\right) = \frac{1}{2}\int d^3\mathbf{p}\, E_{\mathbf{p}}\left[c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + d_{\mathbf{p}} d_{\mathbf{p}}^\dagger + e^{2iE_{\mathbf{p}}t}c_{\mathbf{p}}^\dagger d_{-\mathbf{p}}^\dagger + e^{-2iE_{\mathbf{p}}t}d_{\mathbf{p}}c_{-\mathbf{p}}\right]
+\end{equation}
+
+To cancel the last two terms, change the variable $\mathbf{p}\to -\mathbf{p}$ and use the commutation relations $[c_{\mathbf{p}}, d_{\mathbf{q}}] = [c_{\mathbf{p}}^\dagger, d_{\mathbf{q}}^\dagger]=0$. Since both $|p|^2$ and $E_{\mathbf{p}}$ are invariant under $\mathbf{p}\to -\mathbf{p}$,
+\begin{equation}
+    \int d^3\mathbf{x}\, \left(\nabla\phi^\dagger\cdot\nabla\phi + m^2\phi^\dagger\phi\right) = \frac{1}{2}\int d^3\mathbf{p}\, E_{\mathbf{p}}\left[c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + d_{\mathbf{p}} d_{\mathbf{p}}^\dagger + e^{-2iE_{\mathbf{p}}t}c_{\mathbf{p}}d_{-\mathbf{p}}+e^{2iE_{\mathbf{p}}t}d_{\mathbf{p}}^\dagger c_{-\mathbf{p}}^\dagger\right]
+\end{equation}
+
+Hence, the Hamiltonian is
+\begin{equation}
+    H = \frac{1}{2}\int d^3\mathbf{p}\, E_{\mathbf{p}}\left(c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + c_{\mathbf{p}} c_{\mathbf{p}}^\dagger + d_{\mathbf{p}}^\dagger d_{\mathbf{p}} + d_{\mathbf{p}} d_{\mathbf{p}}^\dagger\right)
+\end{equation}
+Since exchanging the order of $c_{\mathbf{p}}$ and $c_{\mathbf{p}}^\dagger$ gives only a constant (which is the vacuum energy contribution, $\delta^{(3)}(0)\int d^3\mathbf{p} E_{\mathbf{p}}$), the equivalent Hamiltonian can be written as
+
+\begin{equation}
+    H = \int d^3\mathbf{p}\, E_{\mathbf{p}}\left(c_{\mathbf{p}}^\dagger c_{\mathbf{p}} + d_{\mathbf{p}}^\dagger d_{\mathbf{p}}\right)
+\end{equation}
+
+Different normalization of mode ($c_{\mathbf{p}}=(2\pi)^{-3/2}a_{\mathbf{p}}, d_{\mathbf{p}}=(2\pi)^{-3/2}b_{\mathbf{p}}$) varies the hamiltonian and commutation relation upto a constant:
+\begin{equation}
+    H = \int \frac{d^3\mathbf{p}}{(2\pi)^3}\, E_{\mathbf{p}}\left(a_\mathbf{p}^\dagger a_\mathbf{p} + b_\mathbf{p}^\dagger b_\mathbf{p}\right), \qquad [a_\mathbf{p}, a_\mathbf{q}^\dagger] = [b_\mathbf{p}, b_\mathbf{q}^\dagger] = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})
+\end{equation}
+
+since $[H, a_{\mathbf{p}}^\dagger] = E_{\mathbf{p}}a_{\mathbf{p}}^\dagger$ and $[H, b_{\mathbf{p}}^\dagger] = E_{\mathbf{p}}b_{\mathbf{p}}^\dagger$, both $a_{\mathbf{p}}^\dagger$ and $b_{\mathbf{p}}^\dagger$ create a particle with energy $E_{\mathbf{p}}$. And since $[a_{\mathbf{p}}, b_{\mathbf{q}}^\dagger] = 0$ and $\langle 0|b_{\mathbf{p}}^\dagger a_{\mathbf{q}}|0\rangle$ they are independent species of particles.  
+
+
+\subsection{(d)}
+
+The invariance under the transformation $\phi \to \phi e^{i\alpha}= \phi+ i\alpha\phi + O(\alpha^2)$ and $\phi^\dagger \to \phi^\dagger e^{-i\alpha}= \phi^\dagger - i\alpha\phi^\dagger + O(\alpha^2)$ gives the conserved charge
+\begin{equation}
+    i\int d^3\mathbf{x}\, \left(\phi\pi - \phi^\dagger\pi^\dagger\right)
+\end{equation}
+
+Expanding the fields in terms of the modes, the normal ordered charge upto multipliers is
+\begin{equation}
+    Q \sim \int \frac{d^3\mathbf{p}}{(2\pi)^3}\, \left(a_{\mathbf{p}}^\dagger a_{\mathbf{p}} - b_{\mathbf{p}}^\dagger b_{\mathbf{p}}\right)
+\end{equation}
+
+Since $[a_{\mathbf{p}}, b_{\mathbf{q}}]=[a_{\mathbf{p}}, b_{\mathbf{q}}^\dagger]=0$ and $[a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger] = [b_{\mathbf{p}}, b_{\mathbf{q}}^\dagger] = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})$, the commutation relations of the number operators are
+\begin{equation}
+    [a^\dagger_{\mathbf{p}} a_{\mathbf{p}}, b_{\mathbf{q}}^\dagger b_{\mathbf{q}}] = a_{\mathbf{p}}^\dagger b_{\mathbf{q}}^\dagger [a_{\mathbf{p}}, b_{\mathbf{q}}] + a_{\mathbf{p}}^\dagger [a_{\mathbf{p}}, b_{\mathbf{q}}^\dagger] b_{\mathbf{q}} + b_{\mathbf{q}}^\dagger [a_{\mathbf{p}}^\dagger, b_{\mathbf{q}}] a_{\mathbf{p}} + [a_{\mathbf{p}}^\dagger, b_{\mathbf{q}}^\dagger] b_{\mathbf{q}} a_{\mathbf{p}} = 0
+\end{equation}
+and
+\begin{align}
+    [a^\dagger_{\mathbf{p}} a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger a_{\mathbf{q}}] &= a_{\mathbf{p}}^\dagger a_{\mathbf{q}}^\dagger [a_{\mathbf{p}}, a_{\mathbf{q}}] + a_{\mathbf{p}}^\dagger [a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger] a_{\mathbf{q}} + a_{\mathbf{q}}^\dagger [a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}] a_{\mathbf{p}} + [a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}^\dagger] a_{\mathbf{q}} a_{\mathbf{p}} \\
+    &= (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})\left(a_{\mathbf{p}}^\dagger a_{\mathbf{q}} - a_{\mathbf{q}}^\dagger a_{\mathbf{p}}\right) = 0
+\end{align}
+similarly, $[b^\dagger_{\mathbf{p}} b_{\mathbf{p}}, b_{\mathbf{q}}^\dagger b_{\mathbf{q}}] = 0$.
+
+
+Hence, conseration of the charge is verified by the mode expansion of the Hamiltonian and the charge:
+\begin{equation}
+    [H, Q] = \int \frac{d^3\mathbf{p}}{(2\pi)^3}\frac{d^3\mathbf{q}}{(2\pi)^3} E_{\mathbf{p}}\left([a_{\mathbf{p}}^\dagger a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger a_{\mathbf{q}}] + [b_{\mathbf{p}}^\dagger b_{\mathbf{p}}, a_{\mathbf{q}}^\dagger a_{\mathbf{q}}] - [a_{\mathbf{p}}^\dagger a_{\mathbf{p}}, b_{\mathbf{q}}^\dagger b_{\mathbf{q}}] - [b_{\mathbf{p}}^\dagger b_{\mathbf{p}}, b_{\mathbf{q}}^\dagger b_{\mathbf{q}}]\right) = 0
+\end{equation}
+
+Recall the commutation relations with the number operator:
+\begin{align}
+    [a_{\mathbf{p}}^\dagger a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger] &= a_{\mathbf{p}}^\dagger [a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger] + [a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}^\dagger] a_{\mathbf{p}} = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})a_{\mathbf{p}}^\dagger,\\
+    [a_{\mathbf{p}}^\dagger a_{\mathbf{p}}, a_{\mathbf{q}}] &= a_{\mathbf{p}}^\dagger [a_{\mathbf{p}}, a_{\mathbf{q}}] + [a_{\mathbf{p}}^\dagger, a_{\mathbf{q}}] a_{\mathbf{p}} = -(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})a_{\mathbf{p}},\\
+    [b_{\mathbf{p}}^\dagger b_{\mathbf{p}}, b_{\mathbf{q}}^\dagger] &= b_{\mathbf{p}}^\dagger [b_{\mathbf{p}}, b_{\mathbf{q}}^\dagger] + [b_{\mathbf{p}}^\dagger, b_{\mathbf{q}}^\dagger] b_{\mathbf{p}} = (2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})b_{\mathbf{p}}^\dagger,\\
+    [b_{\mathbf{p}}^\dagger b_{\mathbf{p}}, b_{\mathbf{q}}] &= b_{\mathbf{p}}^\dagger [b_{\mathbf{p}}, b_{\mathbf{q}}] + [b_{\mathbf{p}}^\dagger, b_{\mathbf{q}}] b_{\mathbf{p}} = -(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})b_{\mathbf{p}}
+\end{align}
+
+Hence,
+\begin{align}
+    [Q, a_{\mathbf{p}}] = \int \frac{d^3\mathbf{q}}{(2\pi)^3}\left([a_{\mathbf{q}}^\dagger a_{\mathbf{q}}, a_{\mathbf{p}}] - [b_{\mathbf{q}}^\dagger b_{\mathbf{q}}, a_{\mathbf{p}}]\right) = -a_{\mathbf{p}},\\
+    [Q, a_{\mathbf{p}}^\dagger] = \int \frac{d^3\mathbf{q}}{(2\pi)^3}\left([a_{\mathbf{q}}^\dagger a_{\mathbf{q}}, a_{\mathbf{p}}^\dagger] - [b_{\mathbf{q}}^\dagger b_{\mathbf{q}}, a_{\mathbf{p}}^\dagger]\right) = a_{\mathbf{p}}^\dagger,\\
+    [Q, b_{\mathbf{p}}] = \int \frac{d^3\mathbf{q}}{(2\pi)^3}\left([a_{\mathbf{q}}^\dagger a_{\mathbf{q}}, b_{\mathbf{p}}] - [b_{\mathbf{q}}^\dagger b_{\mathbf{q}}, b_{\mathbf{p}}]\right) = b_{\mathbf{p}},\\
+    [Q, b_{\mathbf{p}}^\dagger] = \int \frac{d^3\mathbf{q}}{(2\pi)^3}\left([a_{\mathbf{q}}^\dagger a_{\mathbf{q}}, b_{\mathbf{p}}^\dagger] - [b_{\mathbf{q}}^\dagger b_{\mathbf{q}}, b_{\mathbf{p}}^\dagger]\right) = -b_{\mathbf{p}}^\dagger
+\end{align}
+and the $\mathrm{U}(1)$ quantum number of $a_{\mathbf{p}}^\dagger\ket{0}$ is $1$ and that of $b_{\mathbf{p}}^\dagger\ket{0}$ is $-1$. 
+
+Therefore, the commutator with the field is
+\begin{align}
+    [Q, \phi(x)] 
+    &= \int \frac{d^3\mathbf{p}}{(2\pi)^3\sqrt{2E_{\mathbf{p}}}} \left([Q, a_{\mathbf{p}}] e^{ip\cdot x} + [Q, b_{\mathbf{p}}^\dagger] e^{-ip\cdot x}\right) \\
+    &= \int \frac{d^3\mathbf{p}}{(2\pi)^3\sqrt{2E_{\mathbf{p}}}} \left(-a_{\mathbf{p}} e^{ip\cdot x} - b_{\mathbf{p}}^\dagger e^{-ip\cdot x}\right) \\
+    &= -\phi(x) \\
+    [Q, \phi^\dagger(x)]
+    &= \int \frac{d^3\mathbf{p}}{(2\pi)^3\sqrt{2E_{\mathbf{p}}}} \left([Q, a_{\mathbf{p}}^\dagger] e^{-ip\cdot x} + [Q, b_{\mathbf{p}}] e^{ip\cdot x}\right) \\
+    &= \int \frac{d^3\mathbf{p}}{(2\pi)^3\sqrt{2E_{\mathbf{p}}}} \left(a_{\mathbf{p}}^\dagger e^{-ip\cdot x} + b_{\mathbf{p}} e^{ip\cdot x}\right) \\
+    &= \phi^\dagger(x)
+\end{align}
+
+For the composite operators,
+\begin{gather}
+    [Q, \phi(x)\phi(y)] = [Q, \phi(x)]\phi(y) + \phi(x)[Q, \phi(y)] = -\phi(x)\phi(y) - \phi(x)\phi(y) = -2\phi(x)\phi(y)\\
+    [Q, \phi^\dagger(x)\phi(y)] = [Q, \phi^\dagger(x)]\phi(y) + \phi^\dagger(x)[Q, \phi(y)] = \phi^\dagger(x)\phi(y) - \phi^\dagger(x)\phi(y) = 0
+\end{gather}
+Therefore, the $\mathrm{U}(1)$ quantum number of $\phi\phi$ is twice that of $\phi$, and the $\mathrm{U}(1)$ quantum number of $\phi^\dagger\phi$ is zero.
+
+
+\section{Problem 3.3}
+
+\subsection{(a)}
+
+The spatial fourier transform of Green's function is
+\begin{equation}
+    G(0, \mathbf{x}) = \int \frac{d^3\mathbf{p}}{(2\pi)^3} e^{i\mathbf{p}\cdot\mathbf{x}} g_{\mathbf{p}}(0)
+\end{equation}
+Since $g_{\mathbf{p}}(t)$ is continuous at $t=0$, the boundary condition of retarded and advanced Green's function implies $g_{\mathbf{p}}(0) = 0$. Hence, 
+\begin{equation}
+    G_R(0, \mathbf{x}) = G_A(0, \mathbf{x}) = 0
+\end{equation}
+
+To extend this result to all space-like points, we need $\mathrm{SO}^+(1, 3)$ invariance of the Green's functions. It can be shown by the momentum-space representation:
+\begin{gather}
+    G_{R/A}(x) = \int \frac{d^4p}{(2\pi)^4} e^{ip\cdot x} \tilde{G}_{R/A}(p),\\ 
+    \widetilde{G}_{R}(p)=\lim_{\varepsilon\to 0^+}\frac{i}{(p^0 + i\varepsilon)^2-
+    E_{\mathbf{p}}^2},\\
+    \widetilde{G}_{A}(p)=\lim_{\varepsilon\to 0^+}\frac{i}{(p^0 - i\varepsilon)^2-
+    E_{\mathbf{p}}^2},
+\end{gather}
+
+Even though above expression is not manifestly $\mathrm{SO}(1, 3)$ invariant, it can be transformed into an invariant form as follows:
+\begin{align}
+    \widetilde{G}_{R}(p)&=\lim_{\varepsilon\to 0^+}\frac{i}{(p^0 + i\varepsilon)^2-
+    E_{\mathbf{p}}^2}\\
+    &=\lim_{\varepsilon\to 0^+}\frac{i}{(p^0)^2 + 2i\varepsilon p^0 - \varepsilon^2-
+    E_{\mathbf{p}}^2}\\
+    &=\lim_{\varepsilon\to 0^+}\frac{i}{-p^2 - m^2 + 2i\varepsilon p^0 - \varepsilon^2}\\
+    &=\lim_{\varepsilon\to 0^+}\frac{i}{-p^2 - m^2 + 2i\varepsilon p^0}\\
+    &=\lim_{\eta\to 0^+}\frac{i}{-p^2 - m^2 + i\eta \sgn p^0} \qquad (\eta = 2\varepsilon|p^0|)
+\end{align}
+Both $p^2$ and $m^2$ are $\mathrm{SO}^+(1, 3)$ invariant and $\sgn p^0$ is also $\mathrm{SO}^+(1, 3)$ invariant for time-like $p$. This is enough because the limit $\eta\to 0^+$ only meaningful for $p$ near the pole $p^2=-m^2$ and this means $p$ is time-like. Therefore, the retarded Green's function is $\mathrm{SO}^+(1, 3)$ invariant. Similarly, the advanced Green's function is also $\mathrm{SO}^+(1, 3)$ invariant:
+\begin{equation}
+    \widetilde{G}_{A}(p)
+    =\lim_{\eta\to 0^+}\frac{i}{-p^2 - m^2 - i\eta \sgn p^0}
+\end{equation}
+
+Hence, the position-space Green functions are also $\mathrm{SO}^+(1, 3)$ invariant and all space-like points can be transformed to $(0, \mathbf{x})$ by a orthochronous Lorentz transformation. Therefore,
+\begin{equation}
+    G_R(x) = G_A(x) = 0 \qquad \text{for all } x^2 > 0
+\end{equation}
+
+For the Feynman Green's function, following position-space representation is the counterexample.
+\begin{equation}
+    G_F(x) = \frac{m}{4\pi^2\sqrt{x^2}}K_1\left(m\sqrt{x^2}\right),
+\end{equation}
+
+\subsection{(b)}
+
+
+Start from the spatial Fourier transform of the Green's function:
+\begin{equation}
+    g_{R, \mathbf{p}}(t) = -i\Theta(t)\frac{\sin E_{\mathbf{p}}t}{E_{\mathbf{p}}},\qquad g_{A, \mathbf{p}}(t) = i\Theta(-t)\frac{\sin E_{\mathbf{p}}t}{E_{\mathbf{p}}}
+\end{equation}
+and the two-point function $W(x-y)=\langle 0|\phi(x)\phi(y)|0\rangle$:
+\begin{align}
+    W(x) &= \int\frac{d^3\mathbf{p}}{(2\pi)^3 2E_{\mathbf{p}}}e^{ip\cdot x} \\
+    \langle 0|[\phi(x), \phi(y)]|0\rangle &=W(x-y) - W(y-x)\\
+    &=\int\frac{d^3\mathbf{p}}{(2\pi)^3 2E_{\mathbf{p}}}\left(e^{ip\cdot(x-y)} - e^{-ip\cdot(x-y)}\right) \\
+    &=\int\frac{d^3\mathbf{p}}{(2\pi)^3 2E_{\mathbf{p}}}\left(e^{-iE_{\mathbf{p}}t}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})} - e^{iE_{\mathbf{p}}t}e^{-i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})}\right)
+\end{align}
+
+Combining the retarded and advanced Green's functions, we have
+\begin{equation}
+    g_{R, \mathbf{p}}(t) - g_{A, \mathbf{p}}(t) = -i\frac{\sin E_{\mathbf{p}}t}{E_{\mathbf{p}}}
+\end{equation}
+
+To express the expectation of commutator in terms of the retarded and advanced Green's functions, invert the three-momentum using the fact that $E_{\mathbf{p}}=E_{-\mathbf{p}}$ and the measure is invariant under $\mathbf{p}\to -\mathbf{p}$:
+\begin{align}
+    \langle 0|[\phi(x), \phi(y)]|0\rangle &=\int\frac{d^3\mathbf{p}}{(2\pi)^3 2E_{\mathbf{p}}}\left(e^{-iE_{\mathbf{p}}t}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})} - e^{iE_{\mathbf{p}}t}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})}\right)\\
+    &=i\int\frac{d^3\mathbf{p}}{(2\pi)^3 E_{\mathbf{p}}}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})}\frac{\left(e^{-iE_{\mathbf{p}}t} - e^{iE_{\mathbf{p}}t}\right)}{2i}\\
+    &=-i\int\frac{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})}\frac{\sin E_{\mathbf{p}}t}{E_{\mathbf{p}}}\\
+    &=\int\frac{d^3\mathbf{p}}{(2\pi)^3}e^{i\mathbf{p}\cdot(\mathbf{x}-\mathbf{y})}\left(g_{R, \mathbf{p}}(t) - g_{A, \mathbf{p}}(t)\right)\\
+    &=G_R(x-y) - G_A(x-y)
+\end{align}
+Where $t=x^0-y^0$. 
+
+For space-likely separated points $x$ and $y$,  
+\begin{equation}
+    G_R(x-y) - G_A(x-y) = 0 \implies \langle 0|[\phi(x), \phi(y)]|0\rangle = 0
+\end{equation}
+
+Since the commutator is a c-number (Equation.~\ref{eq:commutator}), this can be generalized to operator identity, which is the microcausality:
+\begin{equation}
+    [\phi(x), \phi(y)] = 0 \qquad \text{for all } (x-y)^2 > 0
+\end{equation}
+
+
+
+\end{document}

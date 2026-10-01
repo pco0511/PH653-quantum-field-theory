@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Exercise 3.1 (not a homework)}{2}{section.1}%
+\contentsline {section}{\numberline {2}Exercise 3.2 (not a homework)}{3}{section.2}%
+\contentsline {section}{\numberline {3}Problem 3.1}{4}{section.3}%
+\contentsline {section}{\numberline {4}Problem 3.2}{6}{section.4}%
+\contentsline {subsection}{(a)}{6}{subsection*.1}%
+\contentsline {subsection}{(b)}{6}{subsection*.2}%
+\contentsline {subsection}{(c)}{8}{subsection*.3}%
+\contentsline {subsection}{(d)}{10}{subsection*.4}%
+\contentsline {section}{\numberline {5}Problem 3.3}{12}{section.5}%
+\contentsline {subsection}{(a)}{12}{subsection*.5}%
+\contentsline {subsection}{(b)}{13}{subsection*.6}%
